@@ -1,7 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
+[System.Serializable]
+public class Items
+{
+    public List<ItemDef> items = new List<ItemDef>();
+}
+[System.Serializable]
+public class ItemDef
+{
+    public string name;
+    public string type;
+    public ItemDef(string name, string type)
+    {
+        this.name = name;
+        this.type = type;
+    }
+}
+public class Item
+{
+    ItemDef ItemDef;
+    int amount;
+    public Item(ItemDef itemDef, int amount)
+    {
+        this.ItemDef = itemDef;
+        this.amount = amount;
+    }
+}
 public class Player : MonoBehaviour
 {
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
@@ -14,27 +41,28 @@ public class Player : MonoBehaviour
     public float maximumY = 70F;
     float rotationY = 0F;
 
+
     // Start is called before the first frame update
     public GameObject playerObject;
     Rigidbody playerRigid;
+    public Items items;
+    public List<Item> inventory;
     float speed = 3f;
     void Start()
     {
         playerRigid = playerObject.GetComponent<Rigidbody>();
         playerRigid.freezeRotation = true;
-    }
-    // Start is called before the first frame update
-    
 
-    // Update is called once per frame
+        items = JsonUtility.FromJson<Items>(File.ReadAllText( Application.dataPath + "/items.json"));
+        inventory = new List<Item>();
+        inventory.Add(new Item(items.items[0], 10));
+    }
+
+
     void Update()
     {
-        //playerRigid.AddForce( Input.GetAxis("Horizontal") * playerObject.transform.right);
-        //playerRigid.AddForce(Input.GetAxis("Vertical") * playerObject.transform.forward);
         playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed;
         CameraLook();
-        
-
     }
     void CameraLook()
     {
