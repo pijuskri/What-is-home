@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
                         hit.collider.gameObject.GetComponentInParent<TreeLogic>().woodLeft--;
-                        PopulateInventory();
+                        //PopulateInventory();
                         coolDown = 2;
                     }
                 }
@@ -168,11 +168,30 @@ public class Player : MonoBehaviour
     }
     void AddItemToInventory(Item itemAdd)
     {
+        int index = 0;
         foreach (var item in inventory)
         {
-            if (item.ItemDef == itemAdd.ItemDef) { item.amount += itemAdd.amount; return; }
+            if (item.ItemDef == itemAdd.ItemDef)
+            {
+                item.amount += itemAdd.amount;
+                Text text = InventoryContainer.transform.GetChild(index).GetComponentInChildren<Text>();
+                if (text.text.Contains(itemAdd.ItemDef.name))
+                {
+                    text.text = itemAdd.ItemDef.name + ":" + itemAdd.amount;
+                }
+                return;
+            }
+            index++;
         }
         inventory.Add(itemAdd);
+        GameObject temp = Instantiate(itemDisplayPrefab, InventoryContainer.transform);
+        InventoryItem inventoryItem = temp.GetComponent<InventoryItem>();
+        Text text1 = temp.GetComponentInChildren<Text>();
+        inventoryItem.hotbar = hotbar;
+        inventoryItem.inventoryIndex = index;
+        text1.text = itemAdd.ItemDef.name + ":" + itemAdd.amount;
+
+
     }
     #region UI
     void PopulateInventory()
