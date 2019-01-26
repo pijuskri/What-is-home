@@ -5,7 +5,11 @@
       "type": "item"
     },
     {
-      "name": "Shovel",
+      "name": "Axe",
+      "type": "item"
+    },
+    {
+      "name": "Wood",
       "type": "item"
     }
   ]
