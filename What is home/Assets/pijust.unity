@@ -2655,7 +2655,7 @@ MonoBehaviour:
   - {fileID: 1650511871}
   itemObjectPrefabs:
   - {fileID: 3828653513433886803, guid: 2b5e1ba8935d59e4794bbe3fd697c435, type: 3}
-  - {fileID: 4214091252002093359, guid: c306892f45fd89346a1538dc49c3e012, type: 3}
+  - {fileID: 100000, guid: 910c331180b414f4ca71d01b9578fbba, type: 3}
   - {fileID: 3828653513433886803, guid: 2b5e1ba8935d59e4794bbe3fd697c435, type: 3}
   currentItemObject: {fileID: 0}
   HandSocket: {fileID: 1409803113}
