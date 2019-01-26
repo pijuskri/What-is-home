@@ -35,6 +35,10 @@ public class Item
     {
     }
 }
+public class Recipe
+{
+    public string name;
+}
 public class Player : MonoBehaviour
 {
     #region camera
@@ -88,6 +92,8 @@ public class Player : MonoBehaviour
         inventory.Add(new Item(items.items[0], 10));
         inventory.Add(new Item(items.items[1], 1));
         inventory.Add(new Item(items.items[3], 1));
+        inventory.Add(new Item(items.items[4], 1));
+        inventory.Add(new Item(items.items[5], 1));
         PopulateInventory();
         InventoryPanel.SetActive(false);
         Cursor.visible = false;
@@ -98,10 +104,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         bool placeObjectPreviewActive = false;
-        playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed;
+        playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed + playerRigid.velocity.y * Vector3.up;
         if(!invOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
-        if (Input.GetKeyDown(KeyCode.Space)) playerRigid.AddForce(Vector3.up * 100);
+        if (Input.GetKeyDown(KeyCode.Space)) playerRigid.AddForce(Vector3.up * 300);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -143,7 +149,8 @@ public class Player : MonoBehaviour
                             placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
                             placeObjectPreview.GetComponent<Collider>().enabled = false;
                         }
-                        else { placeObjectPreview.transform.position = hit.point; placeObjectPreview.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + 90, 0); }
+                        else { placeObjectPreview.transform.position = hit.point; placeObjectPreview.transform.rotation =
+                                Quaternion.Euler(0, transform.rotation.eulerAngles.y + currentItem.ItemDef.itemObject.transform.rotation.eulerAngles.y, 0); }
                         placeObjectPreviewActive = true;
                     }
                 }

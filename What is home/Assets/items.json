@@ -15,6 +15,14 @@
     {
       "name": "Wall",
       "type": "block"
+    },
+    {
+      "name": "Platform",
+      "type": "block"
+    },
+    {
+      "name": "Camp fire",
+      "type": "block"
     }
   ]
 }
