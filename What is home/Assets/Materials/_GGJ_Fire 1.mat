@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: _GGJ_Fire
+  m_Name: _GGJ_Fire 1
   m_Shader: {fileID: 4800000, guid: e55934434e4b3514ba0ac2c305c7e2f0, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
