@@ -1,12 +1,28 @@
 {
   "items": [
     {
-      "name": "lol",
+      "name": "Dirt",
+      "type": "block"
+    },
+    {
+      "name": "Axe",
       "type": "item"
     },
     {
-      "name": "lol",
-      "type": "item"
+      "name": "Wood",
+      "type": "block"
+    },
+    {
+      "name": "Wall",
+      "type": "block"
+    },
+    {
+      "name": "Platform",
+      "type": "block"
+    },
+    {
+      "name": "Camp fire",
+      "type": "block"
     }
   ]
 }

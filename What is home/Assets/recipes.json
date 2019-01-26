@@ -1,0 +1,11 @@
+{
+  "recipes": [
+    {
+      "name": "Wood",
+      "input": "Wood",
+      "output": "Wall",
+      "inputAmount": 1,
+      "outputAmount": 1
+    }
+  ]
+}
