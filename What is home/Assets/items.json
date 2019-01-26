@@ -2,7 +2,7 @@
   "items": [
     {
       "name": "Dirt",
-      "type": "item"
+      "type": "block"
     },
     {
       "name": "Axe",
