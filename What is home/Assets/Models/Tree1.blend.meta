@@ -12,18 +12,32 @@ ModelImporter:
     400004: Icosphere_001
     400006: //RootNode
     2100000: unnamed
+    2100002: TreeBark
+    2100004: Leaves
     2300000: Cylinder
     2300002: Icosphere
     2300004: Icosphere_001
+    2300006: //RootNode
     3300000: Cylinder
     3300002: Icosphere
     3300004: Icosphere_001
+    3300006: //RootNode
     4300000: Icosphere_001
     4300002: Icosphere
     4300004: Cylinder
     7400000: Default Take
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaves
+    second: {fileID: 2100000, guid: 4c8732ab1fd0f5740b97145999090736, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TreeBark
+    second: {fileID: 2100000, guid: dcde8041aeb19594386f035283e73f4e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -58,10 +72,10 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
