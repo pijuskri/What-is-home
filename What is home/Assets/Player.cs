@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
     float speed = 3f;
     bool invOpen = false;
     float coolDown = 0;
+    GameObject placeObjectPreview;
 
     void Start()
     {
@@ -108,10 +109,10 @@ public class Player : MonoBehaviour
         UpdateHotbar();
         HotbarSelection();
        
-        if (Input.GetKeyDown(KeyCode.Mouse0) && hotbar[currentItemIndex] != -1 && !invOpen)
+        if ( hotbar[currentItemIndex] != -1 && !invOpen)
         {
-            Item cuurentItem = inventory[hotbar[currentItemIndex]];
-            if (cuurentItem.ItemDef.name == "Axe" && coolDown < 0)
+            Item currentItem = inventory[hotbar[currentItemIndex]];
+            if (currentItem.ItemDef.name == "Axe" && coolDown < 0 && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
                 {
@@ -123,12 +124,27 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            if (cuurentItem.ItemDef.type == "block")
+            if (currentItem.ItemDef.type == "block")
             {
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 5))
                 {
-                    GameObject temp = Instantiate(cuurentItem.ItemDef.itemObject, hit.point, new Quaternion());
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        currentItem.amount--;
+                        placeObjectPreview.GetComponent<Collider>().enabled = true;
+                        placeObjectPreview = null;
+                    }
+                    else
+                    {
+                        if (placeObjectPreview == null)
+                        {
+                            placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
+                            placeObjectPreview.GetComponent<Collider>().enabled = false;
+                        }
+                        else placeObjectPreview.transform.position = hit.point;
+                    }
                 }
+                else if (placeObjectPreview != null) Destroy(placeObjectPreview);
             }
         }
         coolDown -= Time.deltaTime;
@@ -221,9 +237,10 @@ public class Player : MonoBehaviour
         {
             if (hotbar[index] != -1)
             {
-                Item currentItemIndex = inventory[hotbar[index]];
+                
+                Item currentItem = inventory[hotbar[index]];
                 Text text = hotbarItem.GetComponentInChildren<Text>();
-                text.text = currentItemIndex.ItemDef.name + ":" + currentItemIndex.amount;
+                text.text = currentItem.ItemDef.name + ":" + currentItem.amount;
             }
             else hotbarItem.GetComponentInChildren<Text>().text = "";
 
@@ -234,7 +251,13 @@ public class Player : MonoBehaviour
     {
         Destroy(currentItemObject);
         currentItemObject = null;
-        if(hotbar[currentItemIndex]!=-1)currentItemObject = Instantiate(inventory[hotbar[currentItemIndex]].ItemDef.itemObject, HandSocket);
+        if (hotbar[currentItemIndex] != -1)
+        {
+            currentItemObject = Instantiate(inventory[hotbar[currentItemIndex]].ItemDef.itemObject, HandSocket);
+            Collider col = currentItemObject.GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+        }
+        
     }
     void HotbarSelection()
     {
