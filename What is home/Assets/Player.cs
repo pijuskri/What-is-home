@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
     public int currentItem = 0;
     float speed = 3f;
     bool invOpen = false;
+    float coolDown = 0;
 
     void Start()
     {
@@ -96,7 +97,8 @@ public class Player : MonoBehaviour
     {
         playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed;
         if(!invOpen)CameraLook();
-        transform.position = new Vector3(playerObject.transform.position.x + 0.3f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
+        transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
+        if (Input.GetKeyDown(KeyCode.Space)) playerRigid.AddForce(Vector3.up * 100);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -112,19 +114,23 @@ public class Player : MonoBehaviour
             Debug.Log(hotbarItems[currentItem].GetComponent<Image>().color);
             UpdateHand();
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && coolDown<0)
         {
-            if (inventory[hotbar[currentItem]].ItemDef.name == "Axe")
+            if(hotbar[currentItem]!=-1) if (inventory[hotbar[currentItem]].ItemDef.name == "Axe")
             {
                 if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
                 {
                     if (hit.collider.gameObject.tag == "Tree")
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
+                        hit.collider.gameObject.GetComponentInParent<TreeLogic>().woodLeft--;
+                        PopulateInventory();
+                        coolDown = 2;
                     }
                 }
             }
         }
+        coolDown -= Time.deltaTime;
     }
     void CameraLook()
     {
@@ -172,6 +178,10 @@ public class Player : MonoBehaviour
     void PopulateInventory()
     {
         int index = 0;
+        foreach (Transform item in InventoryContainer.transform)
+        {
+            Destroy(item.gameObject);
+        }
         foreach (var item in inventory)
         {
             GameObject temp = Instantiate(itemDisplayPrefab, InventoryContainer.transform);
@@ -228,7 +238,7 @@ public class Player : MonoBehaviour
         foreach (var item in items.items)
         {
             if (item.name == name) { itemResult = item;break; }
-        }
+        } 
         return itemResult;
     }
     #endregion
