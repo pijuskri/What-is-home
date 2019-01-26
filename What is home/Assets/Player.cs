@@ -87,6 +87,7 @@ public class Player : MonoBehaviour
         inventory = new List<Item>();
         inventory.Add(new Item(items.items[0], 10));
         inventory.Add(new Item(items.items[1], 1));
+        inventory.Add(new Item(items.items[3], 1));
         PopulateInventory();
         InventoryPanel.SetActive(false);
         Cursor.visible = false;
@@ -96,6 +97,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        bool placeObjectPreviewActive = false;
         playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed;
         if(!invOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
@@ -141,12 +143,13 @@ public class Player : MonoBehaviour
                             placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
                             placeObjectPreview.GetComponent<Collider>().enabled = false;
                         }
-                        else placeObjectPreview.transform.position = hit.point;
+                        else { placeObjectPreview.transform.position = hit.point; placeObjectPreview.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + 90, 0); }
+                        placeObjectPreviewActive = true;
                     }
                 }
-                else if (placeObjectPreview != null) Destroy(placeObjectPreview);
             }
         }
+        if (placeObjectPreview != null && !placeObjectPreviewActive) Destroy(placeObjectPreview);
         coolDown -= Time.deltaTime;
     }
     void CameraLook()
@@ -251,7 +254,7 @@ public class Player : MonoBehaviour
     {
         Destroy(currentItemObject);
         currentItemObject = null;
-        if (hotbar[currentItemIndex] != -1)
+        if (hotbar[currentItemIndex] != -1 && inventory[hotbar[currentItemIndex]].ItemDef.type!="block")
         {
             currentItemObject = Instantiate(inventory[hotbar[currentItemIndex]].ItemDef.itemObject, HandSocket);
             Collider col = currentItemObject.GetComponent<Collider>();

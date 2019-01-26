@@ -22,7 +22,7 @@ public class InventoryItem : MonoBehaviour
 
         if (Player.NumKey() != -1)
         {
-            Debug.Log("ey");
+           
             for (int i=0;i<hotbar.Length;i++)
             {
                 if (hotbar[i] == inventoryIndex) hotbar[i] = -1;

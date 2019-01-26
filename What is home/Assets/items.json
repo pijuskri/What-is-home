@@ -11,6 +11,10 @@
     {
       "name": "Wood",
       "type": "block"
+    },
+    {
+      "name": "Wall",
+      "type": "block"
     }
   ]
 }
