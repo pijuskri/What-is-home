@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
 
     public int currentItemIndex = 0;
     float speed = 3f;
+    float baseSpeed = 3f;
     bool invOpen = false;
     float coolDown = 0;
     GameObject placeObjectPreview;
@@ -103,11 +104,20 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        bool placeObjectPreviewActive = false;
+        coolDown -= Time.deltaTime;
+
+        #region movement
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = baseSpeed * 1.75f;
+        }
+        else speed = baseSpeed;
+
         playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed + playerRigid.velocity.y * Vector3.up;
         if(!invOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
         if (Input.GetKeyDown(KeyCode.Space)) playerRigid.AddForce(Vector3.up * 300);
+        #endregion
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -116,7 +126,9 @@ public class Player : MonoBehaviour
         }
         UpdateHotbar();
         HotbarSelection();
-       
+
+        #region actions
+        bool placeObjectPreviewActive = false;
         if ( hotbar[currentItemIndex] != -1 && !invOpen)
         {
             Item currentItem = inventory[hotbar[currentItemIndex]];
@@ -157,7 +169,7 @@ public class Player : MonoBehaviour
             }
         }
         if (placeObjectPreview != null && !placeObjectPreviewActive) Destroy(placeObjectPreview);
-        coolDown -= Time.deltaTime;
+        #endregion
     }
     void CameraLook()
     {
