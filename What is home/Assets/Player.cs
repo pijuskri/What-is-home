@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public List<Item> inventory;
     [HideInInspector] public int[] hotbar = new int[9];
 
-    public int currentItem = 0;
+    public int currentItemIndex = 0;
     float speed = 3f;
     bool invOpen = false;
     float coolDown = 0;
@@ -106,27 +106,28 @@ public class Player : MonoBehaviour
             else { invOpen = true; InventoryPanel.SetActive(true); Cursor.visible = true; }
         }
         UpdateHotbar();
-        if (NumKey() != -1 && !invOpen)
+        HotbarSelection();
+       
+        if (Input.GetKeyDown(KeyCode.Mouse0) && hotbar[currentItemIndex] != -1 && !invOpen)
         {
-            hotbarItems[currentItem].GetComponent<Image>().color = new Color(255, 255, 255, 0.39f);
-            currentItem = NumKey();
-            hotbarItems[currentItem].GetComponent<Image>().color = new Color(255,255,255,0.7f);
-            Debug.Log(hotbarItems[currentItem].GetComponent<Image>().color);
-            UpdateHand();
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && coolDown<0)
-        {
-            if(hotbar[currentItem]!=-1) if (inventory[hotbar[currentItem]].ItemDef.name == "Axe")
+            Item cuurentItem = inventory[hotbar[currentItemIndex]];
+            if (cuurentItem.ItemDef.name == "Axe" && coolDown < 0)
             {
                 if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
                 {
                     if (hit.collider.gameObject.tag == "Tree")
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
-                        hit.collider.gameObject.GetComponentInParent<TreeLogic>().woodLeft--;
-                        //PopulateInventory();
+                        hit.collider.gameObject.GetComponent<TreeLogic>().woodLeft--;
                         coolDown = 2;
                     }
+                }
+            }
+            if (cuurentItem.ItemDef.type == "block")
+            {
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
+                {
+                    GameObject temp = Instantiate(cuurentItem.ItemDef.itemObject, hit.point, new Quaternion());
                 }
             }
         }
@@ -175,9 +176,10 @@ public class Player : MonoBehaviour
             {
                 item.amount += itemAdd.amount;
                 Text text = InventoryContainer.transform.GetChild(index).GetComponentInChildren<Text>();
+
                 if (text.text.Contains(itemAdd.ItemDef.name))
                 {
-                    text.text = itemAdd.ItemDef.name + ":" + itemAdd.amount;
+                    text.text = itemAdd.ItemDef.name + ":" + item.amount;
                 }
                 return;
             }
@@ -219,9 +221,9 @@ public class Player : MonoBehaviour
         {
             if (hotbar[index] != -1)
             {
-                Item currentItem = inventory[hotbar[index]];
+                Item currentItemIndex = inventory[hotbar[index]];
                 Text text = hotbarItem.GetComponentInChildren<Text>();
-                text.text = currentItem.ItemDef.name + ":" + currentItem.amount;
+                text.text = currentItemIndex.ItemDef.name + ":" + currentItemIndex.amount;
             }
             else hotbarItem.GetComponentInChildren<Text>().text = "";
 
@@ -232,7 +234,17 @@ public class Player : MonoBehaviour
     {
         Destroy(currentItemObject);
         currentItemObject = null;
-        if(hotbar[currentItem]!=-1)currentItemObject = Instantiate(inventory[hotbar[currentItem]].ItemDef.itemObject, HandSocket);
+        if(hotbar[currentItemIndex]!=-1)currentItemObject = Instantiate(inventory[hotbar[currentItemIndex]].ItemDef.itemObject, HandSocket);
+    }
+    void HotbarSelection()
+    {
+        if (NumKey() != -1 && !invOpen)
+        {
+            hotbarItems[currentItemIndex].GetComponent<Image>().color = new Color(255, 255, 255, 0.39f);
+            currentItemIndex = NumKey();
+            hotbarItems[currentItemIndex].GetComponent<Image>().color = new Color(255, 255, 255, 0.7f);
+            UpdateHand();
+        }
     }
     #endregion
     #region Utils
