@@ -237,9 +237,10 @@ public class Player : MonoBehaviour
         {
             if (hotbar[index] != -1)
             {
-                Item currentItemIndex = inventory[hotbar[index]];
+                
+                Item currentItem = inventory[hotbar[index]];
                 Text text = hotbarItem.GetComponentInChildren<Text>();
-                text.text = currentItemIndex.ItemDef.name + ":" + currentItemIndex.amount;
+                text.text = currentItem.ItemDef.name + ":" + currentItem.amount;
             }
             else hotbarItem.GetComponentInChildren<Text>().text = "";
 

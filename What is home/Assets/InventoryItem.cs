@@ -19,9 +19,11 @@ public class InventoryItem : MonoBehaviour
     }
     private void OnMouseOver()
     {
+
         if (Player.NumKey() != -1)
         {
-            for(int i=0;i<hotbar.Length;i++)
+            Debug.Log("ey");
+            for (int i=0;i<hotbar.Length;i++)
             {
                 if (hotbar[i] == inventoryIndex) hotbar[i] = -1;
             }
