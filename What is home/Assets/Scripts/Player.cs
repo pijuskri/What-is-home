@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 [System.Serializable]
 public class Items
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
     public GameObject[] itemObjectPrefabs;
     [HideInInspector] public GameObject currentItemObject;
     public Transform HandSocket;
+    public PostProcessVolume postProcess;
     #endregion
 
     [HideInInspector] public Items items;
@@ -75,6 +77,8 @@ public class Player : MonoBehaviour
     float baseSpeed = 3f;
     bool invOpen = false;
     float coolDown = 0;
+    [HideInInspector] public bool glassesOn = false; 
+    [HideInInspector] public bool OnGround = true;
     GameObject placeObjectPreview;
 
     void Start()
@@ -104,6 +108,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        
         coolDown -= Time.deltaTime;
 
         #region movement
@@ -116,7 +121,7 @@ public class Player : MonoBehaviour
         playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed + playerRigid.velocity.y * Vector3.up;
         if(!invOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
-        if (Input.GetKeyDown(KeyCode.Space)) playerRigid.AddForce(Vector3.up * 300);
+        if (Input.GetKeyDown(KeyCode.Space) && OnGround) { playerRigid.AddForce(Vector3.up * 300); OnGround = false; }
         #endregion
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -136,6 +141,7 @@ public class Player : MonoBehaviour
             {
                 if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
                 {
+                    //Debug.Log(hit.collider.gameObject.name);
                     if (hit.collider.gameObject.tag == "Tree")
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
@@ -170,6 +176,11 @@ public class Player : MonoBehaviour
         }
         if (placeObjectPreview != null && !placeObjectPreviewActive) Destroy(placeObjectPreview);
         #endregion
+        if (glassesOn)
+        {
+            postProcess.profile.settings[3].active = false;
+            postProcess.profile.settings[4].active = false;
+        }
     }
     void CameraLook()
     {
