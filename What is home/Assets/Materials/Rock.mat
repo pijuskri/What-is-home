@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leaves
-  m_Shader: {fileID: 4800000, guid: 458af863b4aad424e98151b3b7cce87d, type: 3}
-  m_ShaderKeywords: 
+  m_Name: Rock
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,32 +19,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_3D234E88:
-        m_Texture: {fileID: 2800000, guid: eb7601cd58c0a4b4990f010e33e713c3, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_D2CFD5C5:
-        m_Texture: {fileID: 2800000, guid: dde1ac7edc9a4d241adafdf390897e6f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_F44393CC:
-        m_Texture: {fileID: 2800000, guid: 32d91bd53024908419f496169bac5746, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 58edbe8f05002234297294cf660012c9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -63,44 +39,30 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_33F08FBB: 0.2
-    - Vector1_5958E5D1: 0
-    - Vector1_C60944B7: 1
-    - Vector1_F49713EB: 1
-    - Vector1_F7014F8: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.02
     - _ReceiveShadows: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _UVSec: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Vector2_53437197: {r: 1, g: 1, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
