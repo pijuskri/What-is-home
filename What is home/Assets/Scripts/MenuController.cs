@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
+    public GameObject MainMenu;
+    public GameObject Credits;
+    //private bool k = false;
+    //private bool l = false;
     public void onStartClick()
     {
         SceneManager.LoadScene("Testin");
@@ -12,12 +16,18 @@ public class MenuController : MonoBehaviour
 
     public void onCreditsClick()
     {
-
+        MainMenu.SetActive(false);
+        Credits.SetActive(true);
     }
 
     public void onExitClick()
     {
         Application.Quit();
-        Debug.Log("oof");
+        Debug.Log("oof.lt");
+    }
+    public void onBackClick()
+    {
+        Credits.SetActive(false);
+        MainMenu.SetActive(true);
     }
 }
