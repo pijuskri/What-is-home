@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
                             placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
                             DisableCollision(placeObjectPreview);
                         }
-                        else { placeObjectPreview.transform.position = hit.point; placeObjectPreview.transform.rotation =
+                        else { placeObjectPreview.transform.position = new Vector3(hit.point.x, hit.point.y+0.1f, hit.point.z); placeObjectPreview.transform.rotation =
                                 Quaternion.Euler(0, transform.rotation.eulerAngles.y + currentItem.ItemDef.itemObject.transform.rotation.eulerAngles.y, 0); }
                         placeObjectPreviewActive = true;
                     }
