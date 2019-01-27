@@ -2,17 +2,71 @@
   "recipes": [
     {
       "name": "Craft Wall",
-      "input": "Wood",
-      "output": "Wall",
-      "inputAmount": 1,
-      "outputAmount": 1
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 2
+        }
+      ],
+      "output": [
+        {
+          "name": "Wall",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "name": "Craft Axe",
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 1
+        },
+        {
+          "name": "Stone",
+          "amount": 1
+        }
+      ],
+      "output": [
+        {
+          "name": "Axe",
+          "amount": 1
+        }
+      ]
     },
     {
       "name": "Craft Platform",
-      "input": "Wood",
-      "output": "Platform",
-      "inputAmount": 1,
-      "outputAmount": 1
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 2
+        }
+      ],
+      "output": [
+        {
+          "name": "Platform",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "name": "Craft camp fire",
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 1
+        },
+        {
+          "name": "Stone",
+          "amount": 1
+        }
+      ],
+      "output": [
+        {
+          "name": "Camp fire",
+          "amount": 1
+        }
+      ]
     }
   ]
 }

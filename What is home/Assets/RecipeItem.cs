@@ -21,11 +21,16 @@ public class RecipeItem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Debug.Log(player.EnoughItems(recipe.input, recipe.inputAmount));
-            if (player.EnoughItems(recipe.input, recipe.inputAmount))
+            if (player.EnoughItems(recipe.input))
             {
-                player.AddItemToInventory(new Item(player.FindItemByName(recipe.output), recipe.outputAmount));
-                player.AddItemToInventory(new Item(player.FindItemByName(recipe.input), -recipe.inputAmount));
+                foreach (var item in recipe.input)
+                {
+                    player.AddItemToInventory(new Item(player.FindItemByName(item.name), -item.amount));
+                }
+                foreach (var item in recipe.output)
+                {
+                    player.AddItemToInventory(new Item(player.FindItemByName(item.name), item.amount));
+                }
             }
         }
     }

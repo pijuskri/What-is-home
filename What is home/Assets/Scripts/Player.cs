@@ -45,10 +45,14 @@ public class Recipes
 public class RecipeDef
 {
     public string name;
-    public string input;
-    public string output;
-    public int inputAmount;
-    public int outputAmount;
+    public List<ItemPri> input;
+    public List<ItemPri> output;
+}
+[System.Serializable]
+public class ItemPri
+{
+    public string name;
+    public int amount;
 }
 public class Player : MonoBehaviour
 {
@@ -143,16 +147,20 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && OnGround) { playerRigid.AddForce(Vector3.up * 300); OnGround = false; }
         #endregion
 
+        #region menus
         if (Input.GetKeyDown(KeyCode.E))
         {
+            if (recipeOpen) { recipeOpen = false; recipeListPanel.SetActive(false); }
             if (invOpen) { invOpen = false; InventoryPanel.SetActive(false); Cursor.visible = false; }
             else { invOpen = true; InventoryPanel.SetActive(true); Cursor.visible = true; }
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
+            if (invOpen) { invOpen = false; InventoryPanel.SetActive(false); }
             if (recipeOpen) { recipeOpen = false; recipeListPanel.SetActive(false); Cursor.visible = false; }
             else { recipeOpen = true; recipeListPanel.SetActive(true); Cursor.visible = true; }
         }
+        #endregion
         UpdateHotbar();
         HotbarSelection();
 
@@ -170,7 +178,12 @@ public class Player : MonoBehaviour
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
                         hit.collider.gameObject.GetComponent<TreeLogic>().woodLeft--;
-                        coolDown = 2;
+                        coolDown = 1;
+                    }
+                    if (hit.collider.gameObject.tag == "Rock")
+                    {
+                        AddItemToInventory(new Item(FindItemByName("Stone"), 1));
+                        coolDown = 1;
                     }
                 }
             }
@@ -308,7 +321,7 @@ public class Player : MonoBehaviour
     {
         Destroy(currentItemObject);
         currentItemObject = null;
-        if (hotbar[currentItemIndex] != -1 && inventory[hotbar[currentItemIndex]].ItemDef.type!="block")
+        if (hotbar[currentItemIndex] != -1 && inventory[hotbar[currentItemIndex]].ItemDef.type=="tool")
         {
             currentItemObject = Instantiate(inventory[hotbar[currentItemIndex]].ItemDef.itemObject, HandSocket);
             Collider col = currentItemObject.GetComponent<Collider>();
@@ -335,7 +348,7 @@ public class Player : MonoBehaviour
             recipeItem.player = this;
             recipeItem.recipe = recipe;
             Text text = temp.GetComponentInChildren<Text>();
-            text.text = recipe.input+":"+recipe.inputAmount+" -" + '\n'+recipe.output+":"+recipe.outputAmount;
+            text.text = recipe.name;
         }
     }
     #endregion
@@ -373,6 +386,25 @@ public class Player : MonoBehaviour
                 else return false;
         }
         return false;
+    }
+    public bool EnoughItems(List<ItemPri> items)
+    {
+        bool enough = true;
+        foreach (var needItem in items)
+        {
+            bool found = false;
+            foreach (var inventoryItem in inventory)
+            {
+                if (needItem.name == inventoryItem.ItemDef.name)
+                {
+                    found = true;
+                    if (inventoryItem.amount < needItem.amount) { enough = false; return false; }
+                }
+            }
+            if(!found) return false;
+        }
+        
+        return enough;
     }
     #endregion
 }

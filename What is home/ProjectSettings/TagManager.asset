@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tree
   - Terrain
+  - Rock
   layers:
   - Default
   - TransparentFX

@@ -2,15 +2,15 @@
   "items": [
     {
       "name": "Dirt",
-      "type": "block"
-    },
-    {
-      "name": "Axe",
       "type": "item"
     },
     {
+      "name": "Axe",
+      "type": "tool"
+    },
+    {
       "name": "Wood",
-      "type": "block"
+      "type": "item"
     },
     {
       "name": "Wall",
@@ -23,6 +23,10 @@
     {
       "name": "Camp fire",
       "type": "block"
+    },
+    {
+      "name": "Stone",
+      "type": "item"
     }
   ]
 }
