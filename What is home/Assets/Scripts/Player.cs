@@ -83,6 +83,9 @@ public class Player : MonoBehaviour
     public GameObject recipeListContainer;
     public GameObject recipeListPanel;
     public PostProcessVolume postProcess;
+    public Animator animator;
+    public AudioSource audioSource;
+    public AudioClip chopSound;
     #endregion
 
     [HideInInspector] public Items items;
@@ -131,8 +134,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+
+        Debug.Log(animator.GetBool("Swing"));
         coolDown -= Time.deltaTime;
+        if (coolDown < 0 && animator.GetBool("Swing")) animator.SetBool("Swing", false);
 
         #region movement
         if (Input.GetKey(KeyCode.LeftShift))
@@ -171,21 +176,24 @@ public class Player : MonoBehaviour
             Item currentItem = inventory[hotbar[currentItemIndex]];
             if (currentItem.ItemDef.name == "Axe" && coolDown < 0 && Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 3))
                 {
                     //Debug.Log(hit.collider.gameObject.name);
                     if (hit.collider.gameObject.tag == "Tree")
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
                         hit.collider.gameObject.GetComponent<TreeLogic>().woodLeft--;
-                        coolDown = 1;
+                        audioSource.PlayOneShot(chopSound);
                     }
                     if (hit.collider.gameObject.tag == "Rock")
                     {
                         AddItemToInventory(new Item(FindItemByName("Stone"), 1));
-                        coolDown = 1;
+                        audioSource.PlayOneShot(chopSound);
                     }
                 }
+                
+                coolDown = 1.3f;
+                animator.SetBool("Swing", true);
             }
             if (currentItem.ItemDef.type == "block")
             {
@@ -204,7 +212,7 @@ public class Player : MonoBehaviour
                             placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
                             DisableCollision(placeObjectPreview);
                         }
-                        else { placeObjectPreview.transform.position = new Vector3(hit.point.x, hit.point.y+0.1f, hit.point.z); placeObjectPreview.transform.rotation =
+                        else { placeObjectPreview.transform.position = new Vector3(hit.point.x, hit.point.y+0.2f, hit.point.z); placeObjectPreview.transform.rotation =
                                 Quaternion.Euler(0, transform.rotation.eulerAngles.y + currentItem.ItemDef.itemObject.transform.rotation.eulerAngles.y, 0); }
                         placeObjectPreviewActive = true;
                     }
