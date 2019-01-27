@@ -31,6 +31,10 @@
     {
       "name": "Chair",
       "type": "block"
+    },
+    {
+      "name": "Door",
+      "type": "block"
     }
   ]
 }

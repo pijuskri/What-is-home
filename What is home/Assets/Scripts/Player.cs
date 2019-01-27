@@ -86,6 +86,7 @@ public class Player : MonoBehaviour
     public Animator animator;
     public AudioSource audioSource;
     public AudioClip chopSound;
+    public AudioClip[] footstepSounds;
     #endregion
 
     [HideInInspector] public Items items;
@@ -93,12 +94,14 @@ public class Player : MonoBehaviour
     [HideInInspector] public int[] hotbar = new int[9];
     Recipes recipes;
 
-    public int currentItemIndex = 0;
+    [HideInInspector] public int currentItemIndex = 0;
     float speed = 3f;
     float baseSpeed = 3f;
     bool invOpen = false;
     bool recipeOpen = false;
     float coolDown = 0;
+    float footstepCooldown = 0;
+    float footstepInterval = 0.8f;
     [HideInInspector] public bool glassesOn = false; 
     [HideInInspector] public bool OnGround = true;
     GameObject placeObjectPreview;
@@ -116,11 +119,7 @@ public class Player : MonoBehaviour
         items = JsonUtility.FromJson<Items>(File.ReadAllText( Application.dataPath + "/items.json"));
         InstantiateItems();
         inventory = new List<Item>();
-        //inventory.Add(new Item(items.items[0], 10));
         inventory.Add(new Item(items.items[1], 1));
-        //inventory.Add(new Item(items.items[3], 1));
-        //inventory.Add(new Item(items.items[4], 1));
-        //inventory.Add(new Item(items.items[5], 1));
         PopulateInventory();
         InventoryPanel.SetActive(false);
         Cursor.visible = false;
@@ -134,9 +133,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
-        Debug.Log(animator.GetBool("Swing"));
         coolDown -= Time.deltaTime;
+        footstepCooldown -= Time.deltaTime;
         if (coolDown < 0 && animator.GetBool("Swing")) animator.SetBool("Swing", false);
 
         #region movement
@@ -150,6 +148,12 @@ public class Player : MonoBehaviour
         if(!invOpen && !recipeOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
         if (Input.GetKeyDown(KeyCode.Space) && OnGround) { playerRigid.AddForce(Vector3.up * 300); OnGround = false; }
+        if (OnGround && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && footstepCooldown < 0)
+        {
+            PlayFootstepSound();
+            footstepCooldown = footstepInterval;
+            if (Input.GetKey(KeyCode.LeftShift)) footstepCooldown /= 2;
+        }
         #endregion
 
         #region menus
@@ -221,11 +225,13 @@ public class Player : MonoBehaviour
         }
         if (placeObjectPreview != null && !placeObjectPreviewActive) Destroy(placeObjectPreview);
         #endregion
+        #region misc
         if (glassesOn)
         {
             postProcess.profile.settings[3].active = false;
             postProcess.profile.settings[4].active = false;
         }
+        #endregion
     }
     void CameraLook()
     {
@@ -439,4 +445,9 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+    public void PlayFootstepSound()
+    {
+        int soundIndex = Random.Range(0,footstepSounds.Length);
+        audioSource.PlayOneShot(footstepSounds[soundIndex]);
+    }
 }
