@@ -36,9 +36,19 @@ public class Item
     {
     }
 }
-public class Recipe
+[System.Serializable]
+public class Recipes
+{
+    public List<RecipeDef> recipes = new List<RecipeDef>();
+}
+[System.Serializable]
+public class RecipeDef
 {
     public string name;
+    public string input;
+    public string output;
+    public int inputAmount;
+    public int outputAmount;
 }
 public class Player : MonoBehaviour
 {
@@ -65,17 +75,22 @@ public class Player : MonoBehaviour
     public GameObject[] itemObjectPrefabs;
     [HideInInspector] public GameObject currentItemObject;
     public Transform HandSocket;
+    public GameObject recipeDisplayPrefab;
+    public GameObject recipeListContainer;
+    public GameObject recipeListPanel;
     public PostProcessVolume postProcess;
     #endregion
 
     [HideInInspector] public Items items;
     [HideInInspector] public List<Item> inventory;
     [HideInInspector] public int[] hotbar = new int[9];
+    Recipes recipes;
 
     public int currentItemIndex = 0;
     float speed = 3f;
     float baseSpeed = 3f;
     bool invOpen = false;
+    bool recipeOpen = false;
     float coolDown = 0;
     [HideInInspector] public bool glassesOn = false; 
     [HideInInspector] public bool OnGround = true;
@@ -94,15 +109,19 @@ public class Player : MonoBehaviour
         items = JsonUtility.FromJson<Items>(File.ReadAllText( Application.dataPath + "/items.json"));
         InstantiateItems();
         inventory = new List<Item>();
-        inventory.Add(new Item(items.items[0], 10));
+        //inventory.Add(new Item(items.items[0], 10));
         inventory.Add(new Item(items.items[1], 1));
-        inventory.Add(new Item(items.items[3], 1));
-        inventory.Add(new Item(items.items[4], 1));
-        inventory.Add(new Item(items.items[5], 1));
+        //inventory.Add(new Item(items.items[3], 1));
+        //inventory.Add(new Item(items.items[4], 1));
+        //inventory.Add(new Item(items.items[5], 1));
         PopulateInventory();
         InventoryPanel.SetActive(false);
         Cursor.visible = false;
         hotbarItems[0].GetComponent<Image>().color = new Color(255, 255, 255, 0.7f);
+
+        recipes = JsonUtility.FromJson<Recipes>(File.ReadAllText(Application.dataPath + "/recipes.json"));
+        PopulateRecipes();
+        recipeListPanel.SetActive(false);
     }
 
 
@@ -119,7 +138,7 @@ public class Player : MonoBehaviour
         else speed = baseSpeed;
 
         playerRigid.velocity = (Input.GetAxis("Horizontal") * playerObject.transform.right + Input.GetAxis("Vertical") * playerObject.transform.forward) * speed + playerRigid.velocity.y * Vector3.up;
-        if(!invOpen)CameraLook();
+        if(!invOpen && !recipeOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
         if (Input.GetKeyDown(KeyCode.Space) && OnGround) { playerRigid.AddForce(Vector3.up * 300); OnGround = false; }
         #endregion
@@ -128,6 +147,11 @@ public class Player : MonoBehaviour
         {
             if (invOpen) { invOpen = false; InventoryPanel.SetActive(false); Cursor.visible = false; }
             else { invOpen = true; InventoryPanel.SetActive(true); Cursor.visible = true; }
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (recipeOpen) { recipeOpen = false; recipeListPanel.SetActive(false); Cursor.visible = false; }
+            else { recipeOpen = true; recipeListPanel.SetActive(true); Cursor.visible = true; }
         }
         UpdateHotbar();
         HotbarSelection();
@@ -154,9 +178,9 @@ public class Player : MonoBehaviour
             {
                 if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 5))
                 {
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    if (Input.GetKeyDown(KeyCode.Mouse0) && currentItem.amount>0)
                     {
-                        currentItem.amount--;
+                        AddItemToInventory(new Item( currentItem.ItemDef, -1));
                         placeObjectPreview.GetComponent<Collider>().enabled = true;
                         placeObjectPreview = null;
                     }
@@ -216,7 +240,7 @@ public class Player : MonoBehaviour
             index++;
         }
     }
-    void AddItemToInventory(Item itemAdd)
+    public void AddItemToInventory(Item itemAdd)
     {
         int index = 0;
         foreach (var item in inventory)
@@ -302,6 +326,18 @@ public class Player : MonoBehaviour
             UpdateHand();
         }
     }
+    void PopulateRecipes()
+    {
+        foreach (var recipe in recipes.recipes)
+        {
+            GameObject temp = Instantiate(recipeDisplayPrefab, recipeListContainer.transform);
+            RecipeItem recipeItem = temp.GetComponent<RecipeItem>();
+            recipeItem.player = this;
+            recipeItem.recipe = recipe;
+            Text text = temp.GetComponentInChildren<Text>();
+            text.text = recipe.input+":"+recipe.inputAmount+" -" + '\n'+recipe.output+":"+recipe.outputAmount;
+        }
+    }
     #endregion
     #region Utils
     public static int NumKey()
@@ -327,6 +363,16 @@ public class Player : MonoBehaviour
             if (item.name == name) { itemResult = item;break; }
         } 
         return itemResult;
+    }
+    public bool EnoughItems(string name, int amount)
+    {
+        foreach (var item in inventory)
+        {
+            if (name == item.ItemDef.name)
+                if (item.amount >= amount) return true;
+                else return false;
+        }
+        return false;
     }
     #endregion
 }

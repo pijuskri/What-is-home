@@ -1,9 +1,16 @@
 {
   "recipes": [
     {
-      "name": "Wood",
+      "name": "Craft Wall",
       "input": "Wood",
       "output": "Wall",
+      "inputAmount": 1,
+      "outputAmount": 1
+    },
+    {
+      "name": "Craft Platform",
+      "input": "Wood",
+      "output": "Platform",
       "inputAmount": 1,
       "outputAmount": 1
     }
