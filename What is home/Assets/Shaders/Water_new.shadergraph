@@ -4,13 +4,13 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Value\": {\n        \"r\": 0.09019608050584793,\n        \"g\": 0.33725491166114809,\n        \"b\": 0.5098039507865906,\n        \"a\": 0.0\n    },\n    \"m_Name\": \"Main_Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"f0dbf8ca-2b59-4ba9-984e-e3a0eb1d4935\"\n    },\n    \"m_OverrideReferenceName\": \"\",\n    \"m_ColorMode\": 0,\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Value\": {\n        \"r\": 0.09019608050584793,\n        \"g\": 0.33725491166114809,\n        \"b\": 0.5098039507865906,\n        \"a\": 0.0\n    },\n    \"m_Name\": \"Main_Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"f0dbf8ca-2b59-4ba9-984e-e3a0eb1d4935\"\n    },\n    \"m_OverrideReferenceName\": \"\",\n    \"m_ColorMode\": 1,\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Value\": {\n        \"r\": 0.33725491166114809,\n        \"g\": 0.5568627715110779,\n        \"b\": 0.5137255191802979,\n        \"a\": 0.0\n    },\n    \"m_Name\": \"Top_Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"eedca8bd-9286-49c0-a04c-8117c12f201c\"\n    },\n    \"m_OverrideReferenceName\": \"\",\n    \"m_ColorMode\": 0,\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Value\": {\n        \"r\": 0.33725491166114809,\n        \"g\": 0.5568627715110779,\n        \"b\": 0.5137255191802979,\n        \"a\": 0.0\n    },\n    \"m_Name\": \"Top_Color\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"eedca8bd-9286-49c0-a04c-8117c12f201c\"\n    },\n    \"m_OverrideReferenceName\": \"\",\n    \"m_ColorMode\": 1,\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
