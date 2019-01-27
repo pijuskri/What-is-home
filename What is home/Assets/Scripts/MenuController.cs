@@ -7,6 +7,7 @@ public class MenuController : MonoBehaviour
 {
     public GameObject MainMenu;
     public GameObject Credits;
+    public GameObject Controls;
     //private bool k = false;
     //private bool l = false;
     public void onStartClick()
@@ -25,9 +26,19 @@ public class MenuController : MonoBehaviour
         Application.Quit();
         Debug.Log("oof.lt");
     }
-    public void onBackClick()
+    public void onCreditsBackClick()
     {
         Credits.SetActive(false);
         MainMenu.SetActive(true);
+    }
+    public void onControlsBackClick()
+    {
+        Controls.SetActive(false);
+        MainMenu.SetActive(true);
+    }
+    public void onControlsClick()
+    {
+        Controls.SetActive(true);
+        MainMenu.SetActive(false);
     }
 }
