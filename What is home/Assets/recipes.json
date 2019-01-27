@@ -82,6 +82,21 @@
           "amount": 1
         }
       ]
+    },
+    {
+      "name": "Craft Door",
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 2
+        }
+      ],
+      "output": [
+        {
+          "name": "Door",
+          "amount": 1
+        }
+      ]
     }
   ]
 }

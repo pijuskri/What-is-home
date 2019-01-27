@@ -83,6 +83,10 @@ public class Player : MonoBehaviour
     public GameObject recipeListContainer;
     public GameObject recipeListPanel;
     public PostProcessVolume postProcess;
+    public Animator animator;
+    public AudioSource audioSource;
+    public AudioClip chopSound;
+    public AudioClip[] footstepSounds;
     #endregion
 
     [HideInInspector] public Items items;
@@ -90,12 +94,14 @@ public class Player : MonoBehaviour
     [HideInInspector] public int[] hotbar = new int[9];
     Recipes recipes;
 
-    public int currentItemIndex = 0;
+    [HideInInspector] public int currentItemIndex = 0;
     float speed = 3f;
     float baseSpeed = 3f;
     bool invOpen = false;
     bool recipeOpen = false;
     float coolDown = 0;
+    float footstepCooldown = 0;
+    float footstepInterval = 0.8f;
     [HideInInspector] public bool glassesOn = false; 
     [HideInInspector] public bool OnGround = true;
     GameObject placeObjectPreview;
@@ -113,11 +119,7 @@ public class Player : MonoBehaviour
         items = JsonUtility.FromJson<Items>(File.ReadAllText( Application.dataPath + "/items.json"));
         InstantiateItems();
         inventory = new List<Item>();
-        //inventory.Add(new Item(items.items[0], 10));
         inventory.Add(new Item(items.items[1], 1));
-        //inventory.Add(new Item(items.items[3], 1));
-        //inventory.Add(new Item(items.items[4], 1));
-        //inventory.Add(new Item(items.items[5], 1));
         PopulateInventory();
         InventoryPanel.SetActive(false);
         Cursor.visible = false;
@@ -131,8 +133,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
         coolDown -= Time.deltaTime;
+        footstepCooldown -= Time.deltaTime;
+        if (coolDown < 0 && animator.GetBool("Swing")) animator.SetBool("Swing", false);
 
         #region movement
         if (Input.GetKey(KeyCode.LeftShift))
@@ -145,6 +148,12 @@ public class Player : MonoBehaviour
         if(!invOpen && !recipeOpen)CameraLook();
         transform.position = new Vector3(playerObject.transform.position.x + 0.1f, playerObject.transform.position.y + 0.5f, playerObject.transform.position.z);
         if (Input.GetKeyDown(KeyCode.Space) && OnGround) { playerRigid.AddForce(Vector3.up * 300); OnGround = false; }
+        if (OnGround && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && footstepCooldown < 0)
+        {
+            PlayFootstepSound();
+            footstepCooldown = footstepInterval;
+            if (Input.GetKey(KeyCode.LeftShift)) footstepCooldown /= 2;
+        }
         #endregion
 
         #region menus
@@ -171,21 +180,24 @@ public class Player : MonoBehaviour
             Item currentItem = inventory[hotbar[currentItemIndex]];
             if (currentItem.ItemDef.name == "Axe" && coolDown < 0 && Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 3))
                 {
                     //Debug.Log(hit.collider.gameObject.name);
                     if (hit.collider.gameObject.tag == "Tree")
                     {
                         AddItemToInventory(new Item(FindItemByName("Wood"), 1));
                         hit.collider.gameObject.GetComponent<TreeLogic>().woodLeft--;
-                        coolDown = 1;
+                        audioSource.PlayOneShot(chopSound);
                     }
                     if (hit.collider.gameObject.tag == "Rock")
                     {
                         AddItemToInventory(new Item(FindItemByName("Stone"), 1));
-                        coolDown = 1;
+                        audioSource.PlayOneShot(chopSound);
                     }
                 }
+                
+                coolDown = 1.3f;
+                animator.SetBool("Swing", true);
             }
             if (currentItem.ItemDef.type == "block")
             {
@@ -204,7 +216,7 @@ public class Player : MonoBehaviour
                             placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
                             DisableCollision(placeObjectPreview);
                         }
-                        else { placeObjectPreview.transform.position = new Vector3(hit.point.x, hit.point.y+0.1f, hit.point.z); placeObjectPreview.transform.rotation =
+                        else { placeObjectPreview.transform.position = new Vector3(hit.point.x, hit.point.y+0.2f, hit.point.z); placeObjectPreview.transform.rotation =
                                 Quaternion.Euler(0, transform.rotation.eulerAngles.y + currentItem.ItemDef.itemObject.transform.rotation.eulerAngles.y, 0); }
                         placeObjectPreviewActive = true;
                     }
@@ -213,11 +225,13 @@ public class Player : MonoBehaviour
         }
         if (placeObjectPreview != null && !placeObjectPreviewActive) Destroy(placeObjectPreview);
         #endregion
+        #region misc
         if (glassesOn)
         {
             postProcess.profile.settings[3].active = false;
             postProcess.profile.settings[4].active = false;
         }
+        #endregion
     }
     void CameraLook()
     {
@@ -431,4 +445,9 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+    public void PlayFootstepSound()
+    {
+        int soundIndex = Random.Range(0,footstepSounds.Length);
+        audioSource.PlayOneShot(footstepSounds[soundIndex]);
+    }
 }
