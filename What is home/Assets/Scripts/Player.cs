@@ -194,7 +194,7 @@ public class Player : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.Mouse0) && currentItem.amount>0)
                     {
                         AddItemToInventory(new Item( currentItem.ItemDef, -1));
-                        placeObjectPreview.GetComponent<Collider>().enabled = true;
+                        EnableCollision(placeObjectPreview);
                         placeObjectPreview = null;
                     }
                     else
@@ -202,7 +202,7 @@ public class Player : MonoBehaviour
                         if (placeObjectPreview == null)
                         {
                             placeObjectPreview = Instantiate(currentItem.ItemDef.itemObject, hit.point, new Quaternion());
-                            placeObjectPreview.GetComponent<Collider>().enabled = false;
+                            DisableCollision(placeObjectPreview);
                         }
                         else { placeObjectPreview.transform.position = hit.point; placeObjectPreview.transform.rotation =
                                 Quaternion.Euler(0, transform.rotation.eulerAngles.y + currentItem.ItemDef.itemObject.transform.rotation.eulerAngles.y, 0); }
@@ -405,6 +405,32 @@ public class Player : MonoBehaviour
         }
         
         return enough;
+    }
+    public void DisableCollision(GameObject obj)
+    {
+        Collider collider = obj.GetComponent<Collider>();
+        if (collider != null) collider.enabled = false;
+        Collider[] childColliders = obj.GetComponentsInChildren<Collider>();
+        if (childColliders.Length > 0)
+        {
+            foreach (var col in childColliders)
+            {
+                col.enabled = false;
+            }
+        }
+    }
+    public void EnableCollision(GameObject obj)
+    {
+        Collider collider = obj.GetComponent<Collider>();
+        if (collider != null) collider.enabled = true;
+        Collider[] childColliders = obj.GetComponentsInChildren<Collider>();
+        if (childColliders.Length > 0)
+        {
+            foreach (var col in childColliders)
+            {
+                col.enabled = true;
+            }
+        }
     }
     #endregion
 }
