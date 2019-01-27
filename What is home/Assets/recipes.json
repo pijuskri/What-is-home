@@ -67,6 +67,21 @@
           "amount": 1
         }
       ]
+    },
+    {
+      "name": "Craft Chair",
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 2
+        }
+      ],
+      "output": [
+        {
+          "name": "Chair",
+          "amount": 1
+        }
+      ]
     }
   ]
 }

@@ -356,7 +356,7 @@ public class Player : MonoBehaviour
     public static int NumKey()
     {
         int num = -1;
-        if(Input.GetKeyDown(KeyCode.Alpha0))num = 9;
+        if(Input.GetKeyDown(KeyCode.Alpha0))num = 7;
         if (Input.GetKeyDown(KeyCode.Alpha1)) num = 0;
         if (Input.GetKeyDown(KeyCode.Alpha2)) num = 1;
         if (Input.GetKeyDown(KeyCode.Alpha3)) num = 2;
@@ -364,8 +364,6 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5)) num = 4;
         if (Input.GetKeyDown(KeyCode.Alpha6)) num = 5;
         if (Input.GetKeyDown(KeyCode.Alpha7)) num = 6;
-        if (Input.GetKeyDown(KeyCode.Alpha8)) num = 7;
-        if (Input.GetKeyDown(KeyCode.Alpha9)) num = 8;
         return num;
     }
     public ItemDef FindItemByName(string name)
