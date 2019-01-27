@@ -97,6 +97,40 @@
           "amount": 1
         }
       ]
+    },
+    {
+      "name": "Craft Window",
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 2
+        }
+      ],
+      "output": [
+        {
+          "name": "Window",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "name": "Craft Lantern",
+      "input": [
+        {
+          "name": "Wood",
+          "amount": 1
+        },
+        {
+          "name": "Stone",
+          "amount": 1
+        }
+      ],
+      "output": [
+        {
+          "name": "Lantern",
+          "amount": 1
+        }
+      ]
     }
   ]
 }

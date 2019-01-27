@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public Items items;
     [HideInInspector] public List<Item> inventory;
-    [HideInInspector] public int[] hotbar = new int[9];
+    [HideInInspector] public int[] hotbar = new int[7];
     Recipes recipes;
 
     [HideInInspector] public int currentItemIndex = 0;
@@ -275,24 +275,36 @@ public class Player : MonoBehaviour
             if (item.ItemDef == itemAdd.ItemDef)
             {
                 item.amount += itemAdd.amount;
-                Text text = InventoryContainer.transform.GetChild(index).GetComponentInChildren<Text>();
-
-                if (text.text.Contains(itemAdd.ItemDef.name))
+                if (item.amount <= 0)
                 {
-                    text.text = itemAdd.ItemDef.name + ":" + item.amount;
+                    RemoveHotbarReference(index);
+                    UpdateHotbar();
+                    inventory.Remove(item);
+                    Destroy(InventoryContainer.transform.GetChild(index).gameObject);
+                }
+                else
+                {
+                    Text text = InventoryContainer.transform.GetChild(index).GetComponentInChildren<Text>();
+
+                    if (text.text.Contains(itemAdd.ItemDef.name))
+                    {
+                        text.text = itemAdd.ItemDef.name + ":" + item.amount;
+                    }
                 }
                 return;
             }
             index++;
         }
-        inventory.Add(itemAdd);
-        GameObject temp = Instantiate(itemDisplayPrefab, InventoryContainer.transform);
-        InventoryItem inventoryItem = temp.GetComponent<InventoryItem>();
-        Text text1 = temp.GetComponentInChildren<Text>();
-        inventoryItem.hotbar = hotbar;
-        inventoryItem.inventoryIndex = index;
-        text1.text = itemAdd.ItemDef.name + ":" + itemAdd.amount;
-
+        if (itemAdd.amount > 0)
+        {
+            inventory.Add(itemAdd);
+            GameObject temp = Instantiate(itemDisplayPrefab, InventoryContainer.transform);
+            InventoryItem inventoryItem = temp.GetComponent<InventoryItem>();
+            Text text1 = temp.GetComponentInChildren<Text>();
+            inventoryItem.hotbar = hotbar;
+            inventoryItem.inventoryIndex = index;
+            text1.text = itemAdd.ItemDef.name + ":" + itemAdd.amount;
+        }
 
     }
     #region UI
@@ -321,7 +333,6 @@ public class Player : MonoBehaviour
         {
             if (hotbar[index] != -1)
             {
-                
                 Item currentItem = inventory[hotbar[index]];
                 Text text = hotbarItem.GetComponentInChildren<Text>();
                 text.text = currentItem.ItemDef.name + ":" + currentItem.amount;
@@ -329,6 +340,18 @@ public class Player : MonoBehaviour
             else hotbarItem.GetComponentInChildren<Text>().text = "";
 
             index++;
+        }
+    }
+    void RemoveHotbarReference(int index)
+    {
+        int place = -1;
+        for (int i = 0; i < hotbar.Length; i++)
+        {
+            if (hotbar[i] == index)
+            {
+                hotbar[i] = -1;
+                return;
+            }
         }
     }
     void UpdateHand()

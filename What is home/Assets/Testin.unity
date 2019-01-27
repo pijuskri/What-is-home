@@ -2296,6 +2296,8 @@ MonoBehaviour:
   - {fileID: 1563128257569646190, guid: 4f8f3620c94868447b3e1e1cfe33674e, type: 3}
   - {fileID: 8393377017083653173, guid: 16bd0d0301d864f4bb47bf9ef1a756df, type: 3}
   - {fileID: 7841389723988204448, guid: 3aa615765efd079439b9732171cf36ee, type: 3}
+  - {fileID: 247880031324725494, guid: eda12e3ae6c49de4082bd8616803eb39, type: 3}
+  - {fileID: 1361261522, guid: 596d3e0f6df79484e9395ecadc02ef46, type: 3}
   currentItemObject: {fileID: 0}
   HandSocket: {fileID: 101727546}
   recipeDisplayPrefab: {fileID: 1466568631356131868, guid: eebc2547298788a41ba3e8aea18b7664,
@@ -4919,21 +4921,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 255687895, guid: daad4a42c3dd2644ab082ea0c4c59372, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0036848767
+      value: 0.0034361084
       objectReference: {fileID: 0}
     - target: {fileID: 255687895, guid: daad4a42c3dd2644ab082ea0c4c59372, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 16.993639
+      value: 16.993906
       objectReference: {fileID: 0}
     - target: {fileID: 1272664071440852827, guid: daad4a42c3dd2644ab082ea0c4c59372,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000033252276
+      value: -0.0044491203
       objectReference: {fileID: 0}
     - target: {fileID: 1272664071440852827, guid: daad4a42c3dd2644ab082ea0c4c59372,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.11099243
+      value: 0.11276245
       objectReference: {fileID: 0}
     - target: {fileID: 1257253244, guid: daad4a42c3dd2644ab082ea0c4c59372, type: 3}
       propertyPath: m_AnchorMin.x

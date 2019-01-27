@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 649997884}
   - component: {fileID: 649997886}
   - component: {fileID: 649997885}
+  - component: {fileID: 8556126360539025750}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -261,6 +262,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &8556126360539025750
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649997883}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300006, guid: 9518756313221e243860eaf1c854c6d1, type: 3}
 --- !u!1 &839566514
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +595,7 @@ GameObject:
   - component: {fileID: 1919905075}
   - component: {fileID: 1361261523}
   m_Layer: 0
-  m_Name: Lantern (2)
+  m_Name: Shiny Lantern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -595,7 +610,7 @@ Transform:
   m_GameObject: {fileID: 1361261522}
   m_LocalRotation: {x: -0.0000000018626451, y: 0.09916104, z: 0.0000000014551915,
     w: 0.9950715}
-  m_LocalPosition: {x: 3.952, y: -2.39, z: -1.201}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.07599295, y: 0.07599294, z: 0.07599295}
   m_Children:
   - {fileID: 649997884}
@@ -764,7 +779,7 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 0.9245283, g: 0.5875571, b: 0.22241008, a: 1}
-  m_Intensity: 7.14
+  m_Intensity: 2
   m_Range: 48
   m_SpotAngle: 30
   m_CookieSize: 10

@@ -35,6 +35,14 @@
     {
       "name": "Door",
       "type": "block"
+    },
+    {
+      "name": "Window",
+      "type": "block"
+    },
+    {
+      "name": "Lantern",
+      "type": "block"
     }
   ]
 }
