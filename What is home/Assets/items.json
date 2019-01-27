@@ -27,6 +27,10 @@
     {
       "name": "Stone",
       "type": "item"
+    },
+    {
+      "name": "Chair",
+      "type": "block"
     }
   ]
 }
